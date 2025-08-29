@@ -1,89 +1,53 @@
-# 📊 Detecção de Outliers no PIB dos Municípios Brasileiros
+# 📊 Detecção de Outliers no PIB dos Municípios (Parte 1)
 
-Este projeto foi desenvolvido como parte da disciplina **Técnicas de Pesquisa e Análise de Dados II (TPADII/CDN)** da UFPB.  
-O objetivo é identificar **municípios brasileiros com Produto Interno Bruto (PIB) atípico**, tanto em valores totais quanto em PIB per capita, utilizando métodos estatísticos e de machine learning.
+Este projeto faz parte da disciplina **Análise de Dados I (TPADII/CDN)** da UFPB.  
+Essa é a primeira parte de uma atividade com o objetivo de identificar **municípios brasileiros com Produto Interno Bruto (PIB) atípico**, tanto em valores totais quanto em PIB per capita, utilizando métodos estatísticos simples (IQR e Z-Score).  
 
 ---
 
 ## 🚀 Objetivos
-- Realizar a **preparação dos dados** socioeconômicos do IBGE.  
-- Aplicar técnicas estatísticas (IQR e Z-Score) para detectar outliers.  
-- Testar métodos avançados de machine learning (Isolation Forest e Local Outlier Factor).  
-- Comparar os resultados entre os diferentes métodos.  
-- Interpretar os contextos socioeconômicos dos municípios detectados.  
-- Discutir como esses outliers podem distorcer a média nacional e impactar **políticas públicas**.
+- Realizar a **preparação dos dados** (PIB, população, PIB per capita).  
+- Aplicar **Análise Exploratória de Dados (AED)** com estatísticas e gráficos.  
+- Detectar outliers com **IQR** e **Z-Score**.  
+- Montar comparativos entre os métodos.  
+- Visualizar os resultados em **histogramas, boxplots e gráficos comparativos**.  
 
 ---
 
 ## 📂 Estrutura do Projeto
-- `pib01.ipynb` → Notebook principal com todo o código, análises e visualizações.  
+- `pib01.ipynb` → Notebook principal com código, análises e gráficos.  
 - `Exercicio_02_Outliers.pdf` → Enunciado da atividade.  
-- Saídas gráficas: histogramas, boxplots, heatmaps e comparativos de métodos.
 
 ---
 
 ## 🛠️ Metodologia
 
-### 1. Preparação dos dados
-- Renomeação e padronização de colunas.  
-- Criação da variável `PIB_total` a partir de `PIB_per_capita × População`.  
-- Ajuste de unidades (PIB em R$ mil, conforme IBGE).  
+### 1. Preparação dos Dados
+- Carregamento da base de PIB municipal.  
+- Criação da coluna `PIB_total` a partir de:  
+
+  \[
+  PIB\_total = PIB\_per\_capita \times População
+  \]
+
+- Ajustes para manter consistência de unidades (PIB em reais ou em mil reais).  
 
 ### 2. Análise Exploratória
-- Estatísticas descritivas (`describe`).  
-- Histogramas e boxplots para visualizar distribuição e valores extremos.  
+- Estatísticas descritivas com `.describe()`.  
+- **Histogramas** para observar a distribuição das variáveis.  
+- **Boxplots** para destacar assimetria e possíveis outliers.  
 
-### 3. Métodos de detecção de outliers
-- **IQR (Interquartile Range)** → identifica valores fora do intervalo Q1 ± 1.5×IQR.  
-- **Z-Score** → valores com |Z| > 3 foram considerados outliers.  
-- **Isolation Forest** → modelo baseado em árvores que isola anomalias.  
-- **Local Outlier Factor (LOF)** → avalia densidade local comparada aos vizinhos.  
+### 3. Métodos de Detecção de Outliers
+- **IQR (Interquartile Range):**  
+  - Valores fora do intervalo \([Q1 - 1.5 \times IQR, Q3 + 1.5 \times IQR]\) são outliers.  
 
-### 4. Comparação entre métodos
-- Criação de uma tabela com flags de cada município em cada método.  
-- Gráficos de barras (número de métodos) e heatmap comparativo.  
+- **Z-Score:**  
+  - Valores com \(|Z| > 3\) foram considerados outliers.  
 
----
+### 4. Comparação dos Métodos
+- Criação de uma tabela comparativa com flags para cada município:  
+  - `Outlier_IQR_PC`, `Outlier_IQR_Total`, `Outlier_Z_PC`, `Outlier_Z_Total`.  
+- Visualizações adicionais:  
+  - **Gráfico de barras** → número de métodos que detectaram cada município.  
+  - **Heatmap**
 
-## 🔎 Principais Resultados
-
-- **Municípios mais consistentes como outliers (3 métodos):**  
-  - **Maricá (RJ)** – royalties do petróleo.  
-  - **Canaã dos Carajás (PA)** – polo de mineração.  
-  - **Paulínia (SP)** – polo petroquímico.  
-
-- **Municípios relevantes em 2 métodos:**  
-  - **Saquarema (RJ)** – turismo + petróleo.  
-  - **Catas Altas (MG)** – mineração, população muito pequena.  
-
-- **Exemplo adicional:**  
-  - **Barueri (SP)** – polo empresarial e financeiro (Alphaville).  
-
----
-
-## 📈 Visualizações
-- Histogramas e boxplots do **PIB total** e **PIB per capita**.  
-- Heatmap com a presença dos municípios em cada método.  
-- Gráfico de barras destacando quantos métodos classificaram cada município como outlier.  
-
----
-
-## 📝 Análise Crítica
-Os resultados mostram que municípios com atividades específicas, como **mineração, petróleo ou polos industriais**, se destacam e são detectados como outliers por diversos métodos.  
-
-Esses municípios não representam a realidade nacional: seu PIB elevado é fruto de **atividades concentradas em poucos setores**, não de uma economia diversificada.  
-Assim, eles **distorcem indicadores agregados** como a média do PIB per capita do Brasil.  
-
-➡️ Para políticas públicas, recomenda-se o uso de medidas mais robustas, como **mediana ou percentis**, além de análises regionais, para evitar que poucos municípios ricos encubram a realidade da maioria.
-
----
-
-## 📚 Tecnologias Utilizadas
-- Python (pandas, numpy, matplotlib, seaborn).  
-- scikit-learn (Isolation Forest, Local Outlier Factor).  
-- Jupyter Notebook.  
-
----
-
-## 👨‍💻 Autor
-- Desenvolvido por **[Seu Nome]**, aluno do curso de **Ciência de Dados para Negócios (UFPB)**.  
